@@ -1,0 +1,207 @@
+* {
+    font-family: 'Roboto', 'Nunito', Arial, Helvetica, sans-serif;
+    font-weight: 300;
+    font-style: normal;
+}
+
+html {
+
+}
+
+body {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    min-width: 100vw;
+    min-height: 100vh;
+    width: 100vw;
+    margin: 0;
+}
+
+#section-main-page {
+    display: flex;
+    height: 80%;
+    width: 80%;
+    justify-content: space-around;
+    flex-flow: column wrap;
+}
+
+h3 {
+    font-size: 1.2em;
+}
+
+#input-section {
+    width: 100%;
+    padding: 20px;
+    justify-content: center;
+    display: flex;
+    flex-flow: column;
+    border: rgba(191, 191, 191, 0.61) solid 1px;
+    border-radius: .25rem;;
+    height: 100px;
+    
+}
+
+#input-area {
+    display: flex;
+}
+
+#insert-input {
+    width: 25%;
+    height: 25px;
+    border-radius: .25rem;
+    font-size: 1.2em;
+}
+
+.input-button {
+    font-size: 1em;
+    margin-left: 15px;
+    border-radius: .25rem;
+    border-style: solid;
+    background-color: white;
+    height: 30px;
+}
+
+
+#generate-button {
+    border-color: rgb(82, 181, 82);
+    color: rgb(82, 181, 82);  
+}
+
+#generate-button:hover {
+    background-color: rgb(82, 181, 82);
+    color: white;
+}
+
+#execute-button {
+    border-color: rgb(82, 120, 181);
+    color: rgb(82, 120, 181);
+}
+
+#execute-button:hover {
+    background-color: rgb(82, 120, 181);
+    color: white;
+}
+
+#execute-step-button {
+    border-color: rgb(82, 160, 181);
+    color: rgb(82, 160, 181);
+}
+
+#execute-step-button:hover {
+    background-color: rgb(82, 160, 181);
+    color: white;
+}
+
+#lexical-table {
+    display: flex;
+    flex-flow: column;
+}
+
+#table-head {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+tr {
+    display: flex;
+    
+}
+
+#table-head-main-element {
+    border: solid black 1px;
+    border-left: solid black 1px;
+}
+
+.table-head-element {
+  border-top: black solid 1px;
+  border-right: black solid 1px;
+  border-bottom: black solid 1px;
+  width: calc((100vw * 0.75) / 26); 
+  height: calc((100vw * 0.75) / 31);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#table-body {}
+
+.table-terminal-head {
+  border-left: black solid 1px;
+  border-right: black solid 1px;
+  border-bottom: black solid 1px;
+  width: calc((100vw * 0.75) / 26); 
+  height: calc((100vw * 0.75) / 31);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.table-cell {
+  border-right: black solid 1px;
+  border-bottom: black solid 1px;
+  width: calc((100vw * 0.75) / 26); 
+  height: calc((100vw * 0.75) / 31);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+input {
+    border-radius: 0px;
+    border: 1px black solid;
+}
+
+input:focus {
+    border: 1px lightblue solid;
+}
+
+
+
+
+#word-list {
+    margin-top: 10px;
+    display: flex;
+    flex-flow: row wrap;
+    height: 20px;
+}
+
+.word-list-container {
+    display: flex;
+    flex-flow: row wrap;
+    height: 100%;
+    justify-content: space-around;
+    align-items: center;
+    border: black solid 2px;
+    margin-right: 5px;
+}
+
+.word-in-list {
+    display: flex;
+    margin:  0 5px 0 5px; 
+}
+
+#search-word {
+    display: flex;
+    flex-flow: column;
+    border: rgba(255, 255, 255, 0.609) solid 1px;
+    height: 200px;
+    justify-content: start;
+}
+
+#search-title {
+    margin-top: 44px;
+}
+
+.correct-cell important {
+    background-color: rgb(0, 228, 0);
+}
+
+.wrong-cell {
+    background-color: lightcoral;
+}
+
+.selection-cell {
+    background-color: lightgreen;
+}
