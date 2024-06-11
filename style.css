@@ -103,7 +103,6 @@ button:hover {
 }
 
 #results {
-    visibility: hidden;
     margin-top: 20px;
     border: rgba(191, 191, 191, 0.61) solid 1px;
     border-radius: .25rem;
