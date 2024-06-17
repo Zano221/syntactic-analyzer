@@ -1,3 +1,5 @@
+/////////////////////////////USE A VARIAVEL ABBC PARA TESTAR O PROGRAMA/////////////////////////////
+
 
 var resultsTableGenerated = false;
 var ResultsTable = null;
