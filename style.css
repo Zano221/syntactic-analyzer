@@ -132,8 +132,14 @@ tr {
 
 th {
     border: rgba(191, 191, 191, 0.61) solid 1px;
-    flex-grow: 1;
+    width: 25%;
     font-weight: bold;
+}
+
+td {
+    border: rgba(191, 191, 191, 0.61) solid 1px;
+    font-weight: bold;
+    width: 25%;
 }
 
 #table-head-main-element {
@@ -152,7 +158,12 @@ th {
   align-items: center;
 }
 
-#table-body {}
+#table-body tr {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
 
 .table-terminal-head {
   border-left: black solid 1px;

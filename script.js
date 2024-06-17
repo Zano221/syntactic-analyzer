@@ -1,11 +1,24 @@
 
-HTMLTable = null;
-
+var resultsTableGenerated = false;
+var ResultsTable = null;
 var stack = "S";
 var input = null;
 
-let STATE = "S";
+var STATE = "S";
 var stepAmmount = 0;
+var hadError = false;
+var finished = false;
+
+function resetGlobalValues() {
+  resultsTableGenerated = false;
+  ResultsTable = null;
+  STATE = "S";
+  stepAmmount = 0;
+  hadError = false;
+  finished = false;
+  input = null;
+  stack = "S";
+}
 
 /*S ::= cBb | bCa | abC
 A ::= aCb | cB | bB
@@ -46,6 +59,7 @@ function stackPop() {
 }
 
 function genResultsTable() {
+  resultsTableGenerated = true;
   return $("#results").append(`
                 <table id="results-table">
                   <thead>
@@ -75,129 +89,140 @@ function getResultsTable() {
 }
 
 function resetResultsTable() {
-  getResultsTable().empty();
-  return genResultsTable();
+  let table = getResultsTable();
+  if(!resultsTableGenerated) table = genResultsTable();
+  return table;
+}
+
+function genResultsTableRow(stack, input, action) {
+  return `<tr>
+            <td>${stepAmmount}</td>
+            <td>$${stack}</td>
+            <td>${input}$</td>
+            <td>${action}</td>
+          </tr>`.replace(/,/g, '');
+}
+
+function instantiateResultsTableRow(stack, input, action) {
+  ResultsTable = getResultsTable();
+  let instance = genResultsTableRow(stack, input, action);
+  ResultsTable.append(instance);
 }
 
 function step() {
-  /*$("#table-body").append(`<tr id="step=${step}">
-                          </tr>`)*/
+  const table = resetResultsTable();
   
-                          
-  //$(`#step=${step}`).append(`<td class="table-terminal-head">`);
+  if(finished || hadError) return;
+
+  stepAmmount++;  
+
+    let previoustack = stack;
+    let previousinput = input;
+
+    if(!(stack && stack.length > 0) || parsingTable[STATE][input[0]] == undefined) hadError  = true;
+    if(input.length == 0 && stack.length == 0) {
+      console.log("ACEITO EM 12 BILHOES DE ITERASAO");
+      finished = true;
+      hadError = false;
+    }
+
+    let production;
+
+    if (!finished && !hadError) {
+      
+      //TESTAR UPPERCASE
+      if (isUpperCase(stack[stack.length - 1])) {
+        STATE = stack.at(stack.length - 1);
   
-  if(parsingTable[STATE][input[0]] == undefined) {
-    console.log("\n\n\n ERROR ME IS UNDEFINED LOL \n\n\n")
-    return
-  }
+        action = `${STATE} -> ${parsingTable[STATE][input[0]]}`
+  
+        production = getProduction(STATE, input[0]);
+        stack = stackPop()
+        if(production !== "ε") {
+          stack += production;
+        }
+      }
+      // se n for uppercase, testar se o topo da pilha e o primeiro da entrada
+      else if (stack[stack.length - 1] === input[0]) {
+        // Le a produção
+        action = `Ler ${input[0]}`
+        stack = stackPop()
+        input = input.slice(1);
+      }
+      else {
+        console.log(`\n\n\n ERRO EM SLA ITERAÇÕES \n\n\n ${input.length}, ${stack.length}`);
+        hadError  = true;
+      }
+    }
 
-  if(input.length < 0 && stack.length < 0) return
+    if(finished) action = `Aceito em ${stepAmmount} iterações`;
+    if(hadError) action = `ERRO EM ${stepAmmount}`;
+     
 
-  console.log(stack, input)
-  let production;
-  //TESTAR UPPERCASE
-  if (stack && stack.length > 0 && isUpperCase(stack[stack.length - 1])) {
-    STATE = stack[stack.length - 1];
-    production = getProduction(STATE, input[0]);
-    stack = stackPop()
-    stack += production;
-  }
-  // se n for uppercase, testar se o topo da pilha e o primeiro da entrada
-  else if (stack && stack.length > 0 && stack[stack.length - 1] === input[0]) {
-    // Le a produção
-    stack = stackPop();
-    input = input.slice(1);
-  }
-  else {
-    console.log("\n\n\n ERRO EM SLA ITERAÇÕES \n\n\n");
-    finished = true;
-    return;
-  }
+    instantiateResultsTableRow(previoustack, previousinput, action);
   
 }
 
 function EXECUTE() {
-  //$("#results").css("visibility", "visible");
-  const table = resetResultsTable();
 
-  let finished = false
+  resetGlobalValues();
+  const table = resetResultsTable();
 
   input = $("#insert-input").val().split('');
   if(input.length < 1) return;
 
 
   let STATE = "S";
-  let stepAmmount = 0;
   let action = "";
   //PASSOS
-  for(let i = 0; i < 10; i++) {
+  while(!finished && !hadError) {
     
+    stepAmmount++;  
 
+    let previoustack = stack;
+    let previousinput = input;
+
+    if(!(stack && stack.length > 0) || parsingTable[STATE][input[0]] == undefined) hadError  = true;
     if(input.length == 0 && stack.length == 0) {
       console.log("ACEITO EM 12 BILHOES DE ITERASAO");
-      return;
+      finished = true;
+      hadError = false;
     }
 
-    if(parsingTable[STATE][input[0]] == undefined) {
-      console.log("\n\n\n ERROR ME IS UNDEFINED LOL \n\n\n")
-      return
-    }
-    
-    //console.log(stack, input)
     let production;
-    //TESTAR UPPERCASE
-    if (stack && stack.length > 0 && isUpperCase(stack[stack.length - 1])) {
-      STATE = stack[stack.length - 1];
-      action = `${STATE} -> ${parsingTable[STATE][input[0]]}`
-      production = parsingTable[STATE][input[0]].reverse().toString().replaceAll(",", "");
-      stack = stackPop()
-      if(production !== "ε") {
-        stack += production;
+
+    if (!finished && !hadError) {
+      
+      //TESTAR UPPERCASE
+      if (isUpperCase(stack[stack.length - 1])) {
+        STATE = stack.at(stack.length - 1);
+  
+        action = `${STATE} -> ${parsingTable[STATE][input[0]]}`
+  
+        production = getProduction(STATE, input[0]);
+        stack = stackPop()
+        if(production !== "ε") {
+          stack += production;
+        }
+      }
+      // se n for uppercase, testar se o topo da pilha e o primeiro da entrada
+      else if (stack[stack.length - 1] === input[0]) {
+        // Le a produção
+        action = `Ler ${input[0]}`
+        stack = stackPop()
+        input = input.slice(1);
+      }
+      else {
+        console.log(`\n\n\n ERRO EM SLA ITERAÇÕES \n\n\n ${input.length}, ${stack.length}`);
+        hadError  = true;
       }
     }
-    // se n for uppercase, testar se o topo da pilha e o primeiro da entrada
-    else if (stack && stack.length > 0 && stack[stack.length - 1] === input[0] && !isUpperCase(stack[stack.length - 1])) {
-      // Le a produção
-      action = `Ler ${input[0]}`
-      stack = stackPop()
-      input = input.slice(1);
-    }
-    else {
-      console.log(`\n\n\n ERRO EM SLA ITERAÇÕES \n\n\n ${input.length}, ${stack.length}`);
-      finished = true;
-      return;
-    }
 
-    console.log(`PILHA = ${stack}, ENTRADA = ${input}, AÇÃO = ${action}`)	
+    if(finished) action = `Aceito em ${stepAmmount} iterações`;
+    if(hadError) action = `ERRO EM ${stepAmmount}`;
+     
 
-
-    
-
-    /*if(isUpperCase(stack[stack.length - 1])) {
-      production = parsingTable[STEP][input[0]].reverse().toString().replaceAll(",", "")
-      stack.slice(0, stack.length-1);
-      stack += production
-    }
-    // se n for uppercase, testar se o topo da pilha e o primeiro da entrada
-    else if(stack[stack.length - 1] == input[0]) {
-      stack = stack.slice(0, stack.length-1);
-      input = input.slice(1);
-    }
-    else {
-      console.log("\n\n\n ERROR TEM LETRA ERRADA AI NO TOPO \n\n\n")
-      finished = true;
-      return
-    }*/ 
-    
-    
-
-   // console.log(production)
-
-    //finished = true
-    stepAmmount++;  
-    //return;
-    finished = true
-
+    instantiateResultsTableRow(previoustack, previousinput, action);
   }
 
 }
@@ -218,8 +243,8 @@ function GENERATE_STEP() {
 
 //MAIN
 $(function(){
-
-  //input = $("#insert-input").val();
+  
+  resetGlobalValues();
   
   $('#execute-button').click(function() {
     EXECUTE();
