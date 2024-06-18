@@ -11,6 +11,8 @@ var stepAmmount = 0;
 var hadError = false;
 var finished = false;
 
+var finalstep = stepAmmount;
+
 function resetGlobalValues() {
   resultsTableGenerated = false;
   ResultsTable = null;
@@ -20,6 +22,7 @@ function resetGlobalValues() {
   finished = false;
   input = null;
   stack = "S";
+  finalstep = stepAmmount;
 }
 
 /*S ::= cBb | bCa | abC
@@ -92,7 +95,10 @@ function getResultsTable() {
 
 function resetResultsTable() {
   let table = getResultsTable();
-  if(!resultsTableGenerated) table = genResultsTable();
+  if(!resultsTableGenerated) {
+    table.empty();
+    table = genResultsTable();
+  }
   return table;
 }
 
@@ -101,7 +107,7 @@ function genResultsTableRow(stack, input, action) {
             <td>${stepAmmount}</td>
             <td>$${stack}</td>
             <td>${input}$</td>
-            <td>${action}</td>
+            <td id="action-step-${stepAmmount}">${action}</td>
           </tr>`.replace(/,/g, '');
 }
 
@@ -109,6 +115,16 @@ function instantiateResultsTableRow(stack, input, action) {
   ResultsTable = getResultsTable();
   let instance = genResultsTableRow(stack, input, action);
   ResultsTable.append(instance);
+
+  if(finished) {
+    console.log("ACEITO EM 12 BILHOES DE ITERASAO");	
+    $(`#action-step-${stepAmmount}`).css("color", "green");
+  }
+
+  if(hadError) {
+    console.log("ACEITO EM 12 BILHOES DE ITERASAO");	
+    $(`#action-step-${stepAmmount}`).css("color", "red");
+  }
 }
 
 function step() {
@@ -159,8 +175,8 @@ function step() {
 
     if(finished) action = `Aceito em ${stepAmmount} iterações`;
     if(hadError) action = `ERRO EM ${stepAmmount}`;
-     
-
+    
+    finalstep = stepAmmount;
     instantiateResultsTableRow(previoustack, previousinput, action);
   
 }

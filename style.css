@@ -138,9 +138,17 @@ th {
 
 td {
     border: rgba(191, 191, 191, 0.61) solid 1px;
-    font-weight: bold;
     width: 25%;
 }
+
+#success-cell {
+    color:green;
+}
+
+#failed-cell {
+    color:red;
+}
+
 
 #table-head-main-element {
     border: solid black 1px;
