@@ -115,8 +115,7 @@ function resetResultsTable() {
   let table = getResultsTable();
   if(resultsTableGenerated) return table;
 
-  console.log("ASDADD")
-  table.empty();
+  table.remove();
   table = genResultsTable();
   
 }
@@ -152,8 +151,17 @@ function instantiateResultsTableRow(stack, input, action) {
 }
 
 function step() {
+
+  if(input == null) {
+   input = $("#insert-input").val().split('');
+  }
+
+  if(input.length < 1) return;
+
+
   const table = resetResultsTable();
   
+
   if(finished || hadError) return;
 
   stepAmmount++;  
@@ -161,9 +169,9 @@ function step() {
     let previoustack = stack;
     let previousinput = input;
 
-    if(!(stack && stack.length > 0) || parsingTable[STATE][input[0]] == undefined) hadError  = true;
+    //if(!(stack && stack.length > 0) || parsingTable[STATE][input[0]] == undefined) hadError  = true;
     if(input.length == 0 && stack.length == 0) {
-      console.log("ACEITO EM 12 BILHOES DE ITERASAO");
+      console.log(`ACEITO EM 12 BILHOES DE ITERASAO ${input.length}, ${stack.length}`);
       finished = true;
       hadError = false;
     }
@@ -199,13 +207,10 @@ function step() {
 
     if(finished) action = `Aceito em ${stepAmmount} iterações`;
     if(hadError) action = `ERRO EM ${stepAmmount}`;
-    
+     
     finalstep = stepAmmount;
-    instantiateResultsTableRow(previoustack, previousinput, action);
-  
+    instantiateResultsTableRow(previoustack, previousinput, action);  
 }
-
-
 
 function generateSentence() {
   let stack = ["S"];
@@ -217,7 +222,7 @@ function generateSentence() {
   result = getRandomProduction(top);
 
 
-  for(let fuckyou = 0; fuckyou < 50 || !done; fuckyou++) {
+  for(let a = 0; a < 50 || !done; a++) {
     console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAA")
     for(let i = 0; i < result.length; i++) {
 
@@ -234,44 +239,11 @@ function generateSentence() {
         else {
           result = result.replace(char, scentence)
         }
-
-        //stack.splice(stack.length, 0, ...parsingTable[element][getRandomElement(Object.keys(parsingTable[element]))]);
-        
-
+      }
     }
   }
 
-  /*for(let i = 0; i < 50 || !done; i++)  {
-    console.log(`START ${stack}`);
-    let element = stack.pop();
-    
-    if(element == "ε") continue;
-
-    if(element == element.toUpperCase()) {
-      if(result.length >= 10 && element == "C") {
-        stack.replace(element, '');
-        console.log("OOOOO POTENCIA", stack);
-        done = true;
-      }
-      else {
-        stack.splice(stack.length, 0, ...parsingTable[element][getRandomElement(Object.keys(parsingTable[element]))]);
-        continue;
-      }
-    }
-
-    if(stack.length == 0) break;
-
-    result.push(element);
-
-    console.log(`AFTER ${stack}`);
-    done = true;
-  }*/
-
-  console.log(result);
-
-  
-  
-  }
+  return result;
 }
 
 
@@ -343,14 +315,13 @@ function EXECUTE() {
 function GENERATE() {
   resetResultsTable();
 
-  generateSentence()
+  $("#insert-input").val(generateSentence());
 
 }
 
 function GENERATE_STEP() {
   const table = resetResultsTable();
-  console.log(parsingTable["S"]["a"]);
-    console.log("NOT IMPLEMENTED")
+  step();
 } 
 
 
