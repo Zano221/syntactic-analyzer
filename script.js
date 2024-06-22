@@ -52,7 +52,25 @@ parsingTable = {
 };
 
 function getProduction(STATE, char) {
-  return parsingTable[STATE][char].reverse().toString().replaceAll(",", "");
+
+  let tableProduction = parsingTable[STATE][char];
+  let production = [];
+
+  for(const char in tableProduction) production.push(tableProduction[char]);
+
+  return production.reverse().toString().replaceAll(",", "");
+}
+
+function getRandomElement(array) {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
+function getRandomProduction(STATE) {
+  let tableProduction = parsingTable[STATE][getRandomElement(Object.keys(parsingTable[STATE]))];
+  let production = [];
+  for(const char in tableProduction) production.push(tableProduction[char]);
+
+  return production.toString().replaceAll(",", "");
 }
 
 function isUpperCase(char) {
@@ -95,11 +113,17 @@ function getResultsTable() {
 
 function resetResultsTable() {
   let table = getResultsTable();
-  if(!resultsTableGenerated) {
-    table.empty();
-    table = genResultsTable();
-  }
-  return table;
+  if(resultsTableGenerated) return table;
+
+  console.log("ASDADD")
+  table.empty();
+  table = genResultsTable();
+  
+}
+
+function resetEverything() {
+  resetGlobalValues();
+  return resetResultsTable();
 }
 
 function genResultsTableRow(stack, input, action) {
@@ -122,7 +146,7 @@ function instantiateResultsTableRow(stack, input, action) {
   }
 
   if(hadError) {
-    console.log("ACEITO EM 12 BILHOES DE ITERASAO");	
+    console.log("ERRO EM 10 BILHAO DE ITERASAO");	
     $(`#action-step-${stepAmmount}`).css("color", "red");
   }
 }
@@ -181,10 +205,81 @@ function step() {
   
 }
 
+
+
+function generateSentence() {
+  let stack = ["S"];
+  let result = "";
+  let done = false;
+
+  let top = stack.pop();
+
+  result = getRandomProduction(top);
+
+
+  for(let fuckyou = 0; fuckyou < 50 || !done; fuckyou++) {
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+    for(let i = 0; i < result.length; i++) {
+
+      let char = result[i];
+
+      if(isUpperCase(char)) {
+        
+        let scentence = getRandomProduction(char);
+
+        if(result.length > 10 && char == "C" || scentence == "ε") {
+          result = result.replace(char, '');
+          done = true; 
+        } 
+        else {
+          result = result.replace(char, scentence)
+        }
+
+        //stack.splice(stack.length, 0, ...parsingTable[element][getRandomElement(Object.keys(parsingTable[element]))]);
+        
+
+    }
+  }
+
+  /*for(let i = 0; i < 50 || !done; i++)  {
+    console.log(`START ${stack}`);
+    let element = stack.pop();
+    
+    if(element == "ε") continue;
+
+    if(element == element.toUpperCase()) {
+      if(result.length >= 10 && element == "C") {
+        stack.replace(element, '');
+        console.log("OOOOO POTENCIA", stack);
+        done = true;
+      }
+      else {
+        stack.splice(stack.length, 0, ...parsingTable[element][getRandomElement(Object.keys(parsingTable[element]))]);
+        continue;
+      }
+    }
+
+    if(stack.length == 0) break;
+
+    result.push(element);
+
+    console.log(`AFTER ${stack}`);
+    done = true;
+  }*/
+
+  console.log(result);
+
+  
+  
+  }
+}
+
+
+
 function EXECUTE() {
 
-  resetGlobalValues();
-  const table = resetResultsTable();
+  //resetGlobalValues();
+  const table = resetEverything();
 
   input = $("#insert-input").val().split('');
   if(input.length < 1) return;
@@ -200,9 +295,9 @@ function EXECUTE() {
     let previoustack = stack;
     let previousinput = input;
 
-    if(!(stack && stack.length > 0) || parsingTable[STATE][input[0]] == undefined) hadError  = true;
+    //if(!(stack && stack.length > 0) || parsingTable[STATE][input[0]] == undefined) hadError  = true;
     if(input.length == 0 && stack.length == 0) {
-      console.log("ACEITO EM 12 BILHOES DE ITERASAO");
+      console.log(`ACEITO EM 12 BILHOES DE ITERASAO ${input.length}, ${stack.length}`);
       finished = true;
       hadError = false;
     }
@@ -248,7 +343,8 @@ function EXECUTE() {
 function GENERATE() {
   resetResultsTable();
 
-  console.log("NOT IMPLEMENTED")
+  generateSentence()
+
 }
 
 function GENERATE_STEP() {
@@ -263,6 +359,9 @@ function GENERATE_STEP() {
 $(function(){
   
   resetGlobalValues();
+
+
+  console.log(Object.keys(parsingTable["S"]));
   
   $('#execute-button').click(function() {
     EXECUTE();
