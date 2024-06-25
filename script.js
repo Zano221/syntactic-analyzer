@@ -27,31 +27,19 @@ function resetGlobalValues() {
   finalstep = stepAmmount;
 }
 
-/*S ::= cBb | bCa | abC
-A ::= aCb | cB | bB
-B ::= acC | ε
-C ::= cb | bcS */
-
-/*parsingTable = {
-  "S": { "c": ["c", "B", "b"], "b": ["b", "C", "a"], "a": ["a", "b", "C"] },
-  "A": { "a": ["a", "C", "b"], "c": ["c", "B"], "b": ["b", "B"] },
-  "B": { "a": ["a", "c", "C"], "c": ["a", "c", "C"], "$": ["ε"], "b": ["ε"] },
-  "C": { "c": ["c", "b"], "b": ["b", "c", "S"] } 
-}*/
-
-parsingTableStep = {
-  "S": { "c": "B", "b": "C", "a": "C"},
-  "A": { "a": "C", "c": "B", "b": ["b", "B"] },
-  "B": { "a": ["a", "c", "A"], "c": ["a", "c", "A"], "b": [], "$": ["ε"] },
-  "C": { "c": ["c", "b"], "b": ["b", "c", "S"] }
-}
-
 parsingTable = {
   "S": { "a": ["a", "A", "c"], "b": ["b", "C", "a"] },
   "A": { "a": ["a", "B", "a"], "b": ["b", "C", "b"], "c": ["c", "S", "b"] },
   "B": { "b": ["b", "A", "a"], "c": ["c", "S"] },
   "C": { "c": ["c", "S", "c"], "$": ["ε"], "a": ["ε"], "b": ["ε"] }
 };
+
+/*parsingTable = {
+  "S": { "a": ["a", "A", "c"], "b": ["b", "C", "a"] },
+  "A": { "a": ["a", "B", "a"], "c": ["c", "S", "b"] },
+  "B": { "a": ["ε"], "b": ["b", "A", "a"], "c": ["c", "S"], "$": ["ε"] },
+  "C": { "b": ["b", "C", "b"], "c": ["c", "S", "c"] }
+};*/
 
 function getProduction(STATE, char) {
 
@@ -168,7 +156,7 @@ function step() {
 
     //if(!(stack && stack.length > 0) || parsingTable[STATE][input[0]] == undefined) hadError  = true;
     if(input.length == 0 && stack.length == 0) {
-      console.log(`ACEITO EM 12 BILHOES DE ITERASAO ${input.length}, ${stack.length}`);
+      console.log(`ACEITO EM ${stepAmmount} ITERAÇÕES ${input.length}, ${stack.length}`);
       success = true;
       hadError = false;
     }
@@ -206,7 +194,7 @@ function step() {
         instantiateResultsTableRow(previoustack, previousinput, action); 
       }
       else {
-        console.log(`\n\n\n ERRO EM SLA ITERAÇÕES \n\n\n ${input.length}, ${stack.length}`);
+        console.log(`\n\n\n ERRO EM ${stepAmmount} ITERAÇÕES \n\n\n ${input.length}, ${stack.length}`);
         hadError  = true;
       }
       console.log("AAA")
@@ -214,15 +202,11 @@ function step() {
 
     if(success && !finished) { 
       finished = true;
-      console.log("AAA2")
-
       action = `Aceito em ${stepAmmount} iterações`;
       instantiateResultsTableRow(previoustack, previousinput, action);  
     } 
   
     if(hadError && !finished)  {
-      console.log("AAA3")
-
       finished = true;
       action = `ERRO EM ${stepAmmount}`;
       instantiateResultsTableRow(previoustack, previousinput, action);  
@@ -326,53 +310,3 @@ $(function(){
 
   $("#restart-button").css("visibility", "hidden");
 })
-
-
-////////////TRASH BIN
-
-/*stepAmmount++;  
-
-    let previoustack = stack;
-    let previousinput = input;
-
-    //if(!(stack && stack.length > 0) || parsingTable[STATE][input[0]] == undefined) hadError  = true;
-    if(input.length == 0 && stack.length == 0) {
-      console.log(`ACEITO EM 12 BILHOES DE ITERASAO ${input.length}, ${stack.length}`);
-      success = true;
-      hadError = false;
-    }
-
-    let production;
-
-    if (!success && !hadError) {
-      
-      //TESTAR UPPERCASE
-      if (isUpperCase(stack[stack.length - 1])) {
-        STATE = stack.at(stack.length - 1);
-  
-        action = `${STATE} -> ${parsingTable[STATE][input[0]]}`
-  
-        production = getProduction(STATE, input[0]);
-        stack = stackPop()
-        if(production !== "ε") {
-          stack += production;
-        }
-      }
-      // se n for uppercase, testar se o topo da pilha e o primeiro da entrada
-      else if (stack[stack.length - 1] === input[0]) {
-        // Le a produção
-        action = `Ler ${input[0]}`
-        stack = stackPop()
-        input = input.slice(1);
-      }
-      else {
-        console.log(`\n\n\n ERRO EM SLA ITERAÇÕES \n\n\n ${input.length}, ${stack.length}`);
-        hadError  = true;
-      }
-    }
-
-    if(success) action = `Aceito em ${stepAmmount} iterações`;
-    if(hadError) action = `ERRO EM ${stepAmmount}`;
-     
-
-    instantiateResultsTableRow(previoustack, previousinput, action);*/
