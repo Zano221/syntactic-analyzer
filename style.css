@@ -8,6 +8,7 @@
     --btn-color-green: rgb(82, 181, 82);
     --btn-color-blue: rgb(82, 120, 181);
     --btn-color-lightblue: rgb(82, 160, 181);
+    --cool-grey: rgba(156, 156, 156, 0.61);
 }
 
 html {
@@ -17,19 +18,17 @@ html {
 body {
     display: flex;
     flex-flow: column wrap;
-    align-items: center;
+    align-items: space-between;
     min-width: 100vw;
     min-height: 100vh;
     width: 100vw;
     margin: 0;
 }
 
-#section-main-page {
-    display: flex;
-    height: 80%;
-    width: 80%;
-    justify-content: space-around;
-    flex-flow: column wrap;
+
+#main-title {
+    width: 100%;
+    text-align: center;
 }
 
 h3 {
@@ -37,15 +36,47 @@ h3 {
 }
 
 #input-section {
-    width: 100%;
+    min-width: 95%;
     padding: 20px;
     justify-content: center;
     display: flex;
     flex-flow: column;
-    border: rgba(191, 191, 191, 0.61) solid 1px;
+    border: var(--cool-grey) solid 1px;
     border-radius: .25rem;;
     height: 100px;
     
+    
+}
+
+#section-main-page {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+#grammar-card {
+    font-size: 1.2em;
+    display: flex;
+    width: 25%;
+    border: var(--cool-grey) solid 1px;
+    flex-flow: column;    
+}
+
+.grammar-rule {
+    margin: 0;
+}
+
+
+#conjuntos {
+    display: flex;
+    justify-content: center;
+}
+
+#conjuntos-table {
+    width: 100%;
+}
+
+#grammar-page {
+    width: 40%;
 }
 
 #input-area {
@@ -102,13 +133,24 @@ button:hover {
     color: white;
 }
 
+#restart-button {
+    border-color: lightcoral;
+    color: lightcoral;
+}
+
+#restart-button:hover {
+    background-color: lightcoral;
+    color: white;
+}
+
 #results {
     margin-top: 20px;
-    border: rgba(191, 191, 191, 0.61) solid 1px;
+    border: var(--cool-grey) solid 1px;
     border-radius: .25rem;
     display: flex;
     flex-flow: column;
     align-items: center;
+    width: 100%;
 }
 
 #results-table {
@@ -131,13 +173,13 @@ tr {
 }
 
 th {
-    border: rgba(191, 191, 191, 0.61) solid 1px;
+    border: var(--cool-grey) solid 1px;
     width: 25%;
     font-weight: bold;
 }
 
 td {
-    border: rgba(191, 191, 191, 0.61) solid 1px;
+    border: var(--cool-grey) solid 1px;
     width: 25%;
 }
 

@@ -9,50 +9,109 @@
     <title>Analizador Léxico</title>
 </head>
 <body>
-    <h1 id="main-title">Analisador Sintático Top-Down</h1>
     
+    <h1 id="main-title">Analisador Sintático Top-Down</h1>
+
     <section id="section-main-page">
-
-        <div id="input-section">
-            <h3>Entrada</h3>
-            <div id="input-area">
-                <input id="insert-input">
-                <button id="generate-button" class="input-button">Gerar</button>
-                <button id="execute-button" class="input-button">Executar</button>
-                <button id="execute-step-button" class="input-button">Executar Passo</button>
+        <div id="grammar-card">
+            <h3>Gramática</h3>
+            <div>
+                <p class="grammar-rule">S::= aAc | bCa</p>
+                <p class="grammar-rule">A::= bCb | aBa | cSb</p>
+                <p class="grammar-rule">B::= cS | bAa</p>
+                <p class="grammar-rule">C::= cSc | ε</p>
             </div>
+
+            <h3>Conjuntos</h3>
+            <table id="conjuntos-table">
+                <tr>
+                    <th>FIRST</th>
+                    <th>FOLLOW</th>
+                </tr>
+                <tr>
+                    <td>S = a, b</td>
+                    <td>S = $, a, b, c</td>
+                </tr>
+                <tr>
+                    <td>A = a, c</td>
+                    <td>A = a, b, c</td>
+                </tr>
+                <tr>
+                    <td>B = b, c</td>
+                    <td>cS</td>
+                </tr>
+                <tr>
+                    <td>C = c, ε</td>
+                    <td>C = a, b</td>
+                </tr>
+            </table>
+            
+
+            <h3>Tabela Parsing</h3>
+            <table>
+                <tr>
+                    <th> </th><th>a</th><th>b</th><th>c</th><th>$</th>
+                </tr>
+                <tr>
+                    <td>S</td><td>S → aAc</td><td>S → bCa</td><td>-</td><td>-</td>
+                </tr>
+                <tr>
+                    <td>A</td><td>A → aBa</td><td>A → bCb</td><td>A → cSb</td><td>-</td>
+                </tr>
+                <tr>
+                    <td>B</td><td>S → aAc</td><td>B → bAa</td><td>B → cS</td><td>-</td>
+                </tr>
+                <tr>
+                    <td>C</td><td>C → ε</td><td>C → ε</td><td>C → cSc</td><td>-</td>
+                </tr>
+            </table>
         </div>
         
-        
-        <div id="results">
-            <div width=100% display="box">
-                <h3>Resultados</h3>
+        <div id="grammar-page">
+    
+            <div id="input-section">
+                <h3>Entrada</h3>
+                <div id="input-area">
+                    <input id="insert-input">
+                    <button id="generate-button" class="input-button">Gerar</button>
+                    <button id="execute-button" class="input-button">Executar</button>
+                    <button id="execute-step-button" class="input-button">Executar Passo</button>
+                    <button id="restart-button" class="input-button">Reset</button>
+                </div>
             </div>
-            <!--<table id="results-table">
-                <thead>
-                    <tr>
-                        <th>
-                            #
-                        </th>
-                        <th>
-                            Pilha
-                        </th>
-                        <th>
-                            Entrada
-                        </th>
-                        <th>
-                            Ação
-                        </th>
-                    </tr>
-
-                </thead>
-                <tbody id="table-body">
-                    
-                </tbody>
-            </table>-->
+            
+            
+            <div id="results">
+                <div width=100% display="box">
+                    <h3>Resultados</h3>
+                </div>
+                <!--<table id="results-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                #
+                            </th>
+                            <th>
+                                Pilha
+                            </th>
+                            <th>
+                                Entrada
+                            </th>
+                            <th>
+                                Ação
+                            </th>
+                        </tr>
+    
+                    </thead>
+                    <tbody id="table-body">
+                        
+                    </tbody>
+                </table>-->
+            </div>
+    
         </div>
-
     </section>
+    
     
     <script src="script.js"></script>
 </body>
