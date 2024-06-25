@@ -119,11 +119,12 @@ function resetResultsTable() {
 
   table.remove();
   table = genResultsTable();
-  
+  return table;
 }
 
 function resetEverything() {
   resetGlobalValues();
+  getResultsTable().remove();
   return resetResultsTable();
 }
 
@@ -160,7 +161,7 @@ function step() {
    input = $("#insert-input").val().split('');
   }
 
-  const table = resetResultsTable();
+  //const table = resetResultsTable();
 
     let previoustack = stack;
     let previousinput = input;
@@ -240,7 +241,7 @@ function generateSentence() {
   result = getRandomProduction(top);
 
 
-  for(let a = 0; a < 50 || !done; a++) {
+  while(!done) {
     console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAA")
     for(let i = 0; i < result.length; i++) {
 
@@ -301,6 +302,10 @@ $(function(){
 
 
   console.log(Object.keys(parsingTable["S"]));
+
+  $("#insert-input").keydown(function () { 
+    resetGlobalValues();
+  });
   
   $('#execute-button').click(function() {
     EXECUTE();

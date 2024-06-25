@@ -14,16 +14,16 @@
 
     <section id="section-main-page">
         <div id="grammar-card">
-            <h3>Gramática</h3>
-            <div>
+            <h3 class="card-element">Gramática</h3>
+            <div class="card-element">
                 <p class="grammar-rule">S::= aAc | bCa</p>
                 <p class="grammar-rule">A::= bCb | aBa | cSb</p>
                 <p class="grammar-rule">B::= cS | bAa</p>
                 <p class="grammar-rule">C::= cSc | ε</p>
             </div>
 
-            <h3>Conjuntos</h3>
-            <table id="conjuntos-table">
+            <h3 class="card-element">Conjuntos</h3>
+            <table id="conjuntos-table" class="card-element">
                 <tr>
                     <th>FIRST</th>
                     <th>FOLLOW</th>
@@ -38,7 +38,7 @@
                 </tr>
                 <tr>
                     <td>B = b, c</td>
-                    <td>cS</td>
+                    <td>B = a</td>
                 </tr>
                 <tr>
                     <td>C = c, ε</td>
@@ -47,8 +47,8 @@
             </table>
             
 
-            <h3>Tabela Parsing</h3>
-            <table>
+            <h3 class="card-element">Tabela Parsing</h3>
+            <table class="card-element">
                 <tr>
                     <th> </th><th>a</th><th>b</th><th>c</th><th>$</th>
                 </tr>
@@ -70,7 +70,7 @@
         <div id="grammar-page">
     
             <div id="input-section">
-                <h3>Entrada</h3>
+                <h3 style="margin-top: 0">Entrada</h3>
                 <div id="input-area">
                     <input id="insert-input">
                     <button id="generate-button" class="input-button">Gerar</button>

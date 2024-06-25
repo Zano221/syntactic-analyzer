@@ -54,11 +54,17 @@ h3 {
 }
 
 #grammar-card {
+    height: 614.2px;
     font-size: 1.2em;
     display: flex;
     width: 25%;
     border: var(--cool-grey) solid 1px;
     flex-flow: column;    
+}
+
+.card-element {
+    margin-left: 15px;
+    margin-right: 15px;
 }
 
 .grammar-rule {
